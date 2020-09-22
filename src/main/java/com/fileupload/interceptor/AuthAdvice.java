@@ -18,7 +18,7 @@ public class AuthAdvice {
     @Autowired
     private JWTHandler jwtHandler;
 
-    @Around(value = "@annotation(com.chandra.auth.Private)")
+    @Around(value = "@annotation(com.fileupload.auth.Private)")
     public Object privateCheck(ProceedingJoinPoint pjp) throws Throwable {
         Object[] args = pjp.getArgs();
         AuthContext authContext = null;
