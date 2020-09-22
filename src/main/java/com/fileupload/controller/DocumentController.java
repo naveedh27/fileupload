@@ -76,10 +76,11 @@ public class DocumentController {
 
     @Private
     @RequestMapping(value = "/share", method = RequestMethod.POST)
-    public void share(@AuthForHeader AuthContext context,
+    public ResponseEntity share(@AuthForHeader AuthContext context,
                       @RequestParam("toEmail") String toEmail,
                       @RequestParam("docId") String docId) {
         documentService.share(context, toEmail, docId);
+        return ResponseEntity.ok("Added");
     }
 
     @Private

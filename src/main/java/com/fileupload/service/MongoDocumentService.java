@@ -76,7 +76,7 @@ public class MongoDocumentService implements DocumentService {
     }
 
     private boolean isShared(String docId, String email) {
-        return Optional.ofNullable(mongoTemplate.findOne(new BasicQuery("{documentId: " + docId + ", toEmail:" + email + "}"), Share.class))
+        return Optional.ofNullable(mongoTemplate.findOne(new BasicQuery("{documentId: '" + docId + "', toEmail:'" + email + "'}"), Share.class))
                 .isPresent();
     }
 
@@ -98,7 +98,7 @@ public class MongoDocumentService implements DocumentService {
                 .orElseThrow(() -> new BusinessException("Invalid toEmail", CustomErrorCode.FIELD_ERROR));
 
 
-        String quryString = "{_id:" + docId + "}";
+        String quryString = "{_id:'" + docId + "'}";
         BasicQuery query = new BasicQuery(quryString);
 
         Document one = Optional.ofNullable(mongoTemplate.findOne(query, Document.class))
