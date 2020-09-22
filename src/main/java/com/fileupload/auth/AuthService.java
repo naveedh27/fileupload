@@ -1,4 +1,4 @@
-package com.fileupload.service;
+package com.fileupload.auth;
 
 import com.fileupload.auth.JWTHandler;
 import com.fileupload.domain.User;

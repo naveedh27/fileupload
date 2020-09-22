@@ -1,7 +1,9 @@
 package com.fileupload.domain;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -11,8 +13,11 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@org.springframework.data.mongodb.core.mapping.Document
 public class Document {
+    @Id
     String _id;
+    @Indexed
     String email;
     String title;
     String name;
