@@ -22,13 +22,14 @@ import java.util.stream.Collectors;
 
 @RestController
 @Log4j2
+@RequestMapping("/v1/files")
 public class DocumentController {
 
     @Autowired
     private DocumentService documentService;
 
     @Private
-    @RequestMapping(value = "/upload-document/{documentTitle}", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload/{documentTitle}", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject uploadPhoto(@AuthForHeader AuthContext context,
                                   @RequestParam("file") MultipartFile file,
@@ -36,7 +37,7 @@ public class DocumentController {
         return new JSONObject().fluentPut("id", documentService.save(context, documentTitle, file));
     }
 
-    @RequestMapping(value = "/document", method = RequestMethod.GET)
+    @RequestMapping(value = "/download", method = RequestMethod.GET)
     @Private
     public void getDocument(@RequestParam("docId") String docId, HttpServletResponse resp, @AuthForHeader AuthContext context) {
 
@@ -82,6 +83,7 @@ public class DocumentController {
     }
 
     @Private
+    @RequestMapping(value = "/getmyfiles", method = RequestMethod.GET)
     public ResponseEntity<List<DocumentDto>> getMyFiles(@AuthForHeader AuthContext authContext){
         return ResponseEntity.ok(documentService.getMyFiles(authContext)
                 .stream()
@@ -90,6 +92,7 @@ public class DocumentController {
     }
 
     @Private
+    @RequestMapping(value = "/getsharedfiles", method = RequestMethod.GET)
     public ResponseEntity<List<DocumentDto>> getSharedFiles(@AuthForHeader AuthContext authContext){
         return ResponseEntity.ok(documentService.getSharedFiles(authContext)
                 .stream()

@@ -111,7 +111,7 @@ public class MongoDocumentService implements DocumentService {
     @Override
     public List<Document> getMyFiles(AuthContext authContext) {
 
-        String quryString = "{email : " + authContext.getEmail() + "}";
+        String quryString = "{email : '" + authContext.getEmail() + "'}";
         BasicQuery query = new BasicQuery(quryString);
 
         return mongoTemplate.find(query, Document.class);
@@ -119,12 +119,13 @@ public class MongoDocumentService implements DocumentService {
 
     @Override
     public List<Document> getSharedFiles(AuthContext authContext) {
-        String quryString = "{toEmail : " + authContext.getEmail() + "}";
+        String quryString = "{toEmail : '" + authContext.getEmail() + "'}";
         BasicQuery query = new BasicQuery(quryString);
 
         String collect = mongoTemplate.find(query, Share.class)
                 .stream()
                 .map(Share::getDocumentId)
+                .map(h -> "'" + h + "'")
                 .collect(Collectors.joining(",", "[", "]"));
 
         return mongoTemplate.find(new BasicQuery("{ _id : { $in : " + collect + " } } "), Document.class);

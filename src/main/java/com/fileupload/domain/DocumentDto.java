@@ -1,7 +1,13 @@
 package com.fileupload.domain;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.Date;
 
+@Getter
+@NoArgsConstructor
 public class DocumentDto {
     String _id;
     String email;

@@ -39,7 +39,7 @@ public class AuthService {
     private boolean checkValidity(String email, char[] pwd) {
         User one = Optional.ofNullable(userRepository.findByEmail(email))
                 .orElseThrow(() -> new BusinessException("mail id not found", CustomErrorCode.NOT_AUTHORIZED));
-        return Arrays.equals(pwd, one.getPasswordHash().toCharArray());
+        return DigestUtils.md5DigestAsHex(new String(pwd).getBytes()).equals(one.getPasswordHash());
     }
 
 

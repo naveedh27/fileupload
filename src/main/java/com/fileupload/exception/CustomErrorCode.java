@@ -1,9 +1,11 @@
 package com.fileupload.exception;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
+@Getter
 public enum CustomErrorCode {
 
     NOT_AUTHORIZED("Not an authorized request", HttpStatus.UNAUTHORIZED),
