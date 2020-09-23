@@ -9,6 +9,7 @@ import com.fileupload.repository.UserRepository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.client.gridfs.model.GridFSFile;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
@@ -32,15 +33,19 @@ import static com.fileupload.exception.CustomErrorCode.DOCUMENT_UPLOAD_REJECTED;
 public class MongoDocumentService implements DocumentService {
 
     @Autowired
+    @Setter
     private GridFsTemplate gridFsTemplate;
 
     @Autowired
+    @Setter
     private MongoTemplate mongoTemplate;
 
     @Autowired
+    @Setter
     private UserRepository userRepository;
 
     @Autowired
+    @Setter
     private GridFsOperations operations;
 
     @Override
