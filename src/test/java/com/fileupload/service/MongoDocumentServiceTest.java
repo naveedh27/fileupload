@@ -9,13 +9,16 @@ import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class MongoDocumentServiceTest {
 
@@ -31,10 +34,10 @@ class MongoDocumentServiceTest {
     void setup() {
         documentService = new MongoDocumentService();
 
-        mongoTemplate = Mockito.mock(MongoTemplate.class);
-        userRepository = Mockito.mock(UserRepository.class);
-        operations = Mockito.mock(GridFsOperations.class);
-        gridFsTemplate = Mockito.mock(GridFsTemplate.class);
+        mongoTemplate = mock(MongoTemplate.class);
+        userRepository = mock(UserRepository.class);
+        operations = mock(GridFsOperations.class);
+        gridFsTemplate = mock(GridFsTemplate.class);
 
         documentService.setGridFsTemplate(gridFsTemplate);
         documentService.setMongoTemplate(mongoTemplate);
@@ -45,23 +48,17 @@ class MongoDocumentServiceTest {
     }
 
     @Test
-    void save() {
-
-        MultipartFile file = Mockito.mock(MultipartFile.class);
-
+    void save() throws Exception {
+        MultipartFile file = mock(MultipartFile.class);
+        when(file.getInputStream()).thenReturn(mock(InputStream.class));
+        when(file.getName()).thenReturn("name");
+        when(file.getContentType()).thenReturn("contentType");
         ArgumentCaptor<Document> captor = ArgumentCaptor.forClass(Document.class);
         ObjectId value = new ObjectId();
-
-        Mockito.doReturn(value).when(gridFsTemplate).
-                store(Mockito.any(InputStream.class), Mockito.any(String.class), Mockito.any(String.class), Mockito.any(DBObject.class));
-
-
-        Mockito.when(mongoTemplate.save(captor.capture())).thenAnswer(invocation -> captor.getValue());
-
-        Assert.assertEquals(value.toHexString(), documentService.save(Mockito.mock(AuthContext.class), "Hello", Mockito.mock(MultipartFile.class)));
-
-        Assert.assertEquals("1", captor.getValue().get_id());
-
+        when(gridFsTemplate.store(any(InputStream.class), any(String.class), any(String.class), any(DBObject.class))).thenReturn(value);
+        when(mongoTemplate.save(captor.capture())).thenAnswer(invocation -> captor.getValue());
+        Assert.assertEquals(value.toHexString(), documentService.save(new AuthContext(), "Hello", file));
+        Assert.assertEquals(value.toHexString(), captor.getValue().get_id());
     }
 
     @Test
