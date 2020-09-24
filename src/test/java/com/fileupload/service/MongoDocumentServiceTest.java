@@ -63,6 +63,21 @@ class MongoDocumentServiceTest {
 
     @Test
     void find() {
+
+        AuthContext context = new AuthContext();
+        context.setEmail("aaadd@ffgg.com");
+        context.setToken("kjsafdskd xcm klvmskdf");
+        String docId = "11222HHG";
+        Document document = Document.builder()
+                .name("MYDOC")
+                .email("aaadd@ffgg.com")
+                .build();
+
+        when(mongoTemplate.findById(context, Document.class)).thenReturn(document);
+
+
+
+
     }
 
     @Test
